@@ -1,22 +1,4 @@
-## MẠNG MÁY TÍNH (CO3003)
 
-## Bài tập lớn 1
-
-# Simple Chat Application
-
-```
-GVHD: Nguyễn Hồng Nam
-```
-```
-SV thực hiện: 
-   [Hide]
-   [Hide]
-   [Hide]
-   [Hide]
-```
-```
-Tp. Hồ Chí Minh, Tháng 10/2018
-```
 
 ## Mục lục
 

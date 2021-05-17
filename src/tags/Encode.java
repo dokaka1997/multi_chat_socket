@@ -1,6 +1,9 @@
 package tags;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 import java.math.BigInteger;
+import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
@@ -25,6 +28,8 @@ public class Encode {
 
     public static String sendMessage(String message) {
 //		System.out.println("(encode)Dau vao message: " + message);
+
+
         Matcher findMessage = checkMessage.matcher(message);
         String result = "";
         while (findMessage.find()) {
@@ -40,26 +45,26 @@ public class Encode {
         }
         result += message;
 
-        String hashtext;
+
         try {
 
-            MessageDigest md = MessageDigest.getInstance("MD5");
+            String key = "Key12345Key12345"; // 128 bit key
+            Cipher cipher = Cipher.getInstance("AES");
+            // Encode the string into bytes using utf-8
+            Key aesKey = new SecretKeySpec(key.getBytes(), "AES");
+            cipher.init(Cipher.ENCRYPT_MODE, aesKey);
+            byte[] utf8 = result.getBytes("UTF8");
 
-            byte[] messageDigest = md.digest(result.getBytes());
+            // Encrypt
+            byte[] enc = cipher.doFinal(utf8);
 
-            BigInteger no = new BigInteger(1, messageDigest);
-
-            hashtext = no.toString(16);
-            while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
-            }
-
-        } catch (NoSuchAlgorithmException e) {
+//		System.out.println("(encode)Dau ra message: " + Tags.CHAT_MSG_OPEN_TAG + result + Tags.CHAT_MSG_CLOSE_TAG);
+            return Tags.CHAT_MSG_OPEN_TAG + new sun.misc.BASE64Encoder().encode(enc) + Tags.CHAT_MSG_CLOSE_TAG;
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
-//		System.out.println("(encode)Dau ra message: " + Tags.CHAT_MSG_OPEN_TAG + result + Tags.CHAT_MSG_CLOSE_TAG);
-        return Tags.CHAT_MSG_OPEN_TAG + hashtext + Tags.CHAT_MSG_CLOSE_TAG;
+
     }
 
     public static String sendRequestChat(String name) {

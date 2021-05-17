@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="javax-crypto">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Downloads/javax-crypto.jar/javax-crypto.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
