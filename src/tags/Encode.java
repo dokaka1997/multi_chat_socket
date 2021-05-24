@@ -47,19 +47,23 @@ public class Encode {
 
 
         try {
+            if (!result.contains("<img src=")) {
+                String key = "Key12345Key12345"; // 128 bit key
+                Cipher cipher = Cipher.getInstance("AES");
+                // Encode the string into bytes using utf-8
+                Key aesKey = new SecretKeySpec(key.getBytes(), "AES");
+                cipher.init(Cipher.ENCRYPT_MODE, aesKey);
+                byte[] utf8 = result.getBytes("UTF8");
 
-            String key = "Key12345Key12345"; // 128 bit key
-            Cipher cipher = Cipher.getInstance("AES");
-            // Encode the string into bytes using utf-8
-            Key aesKey = new SecretKeySpec(key.getBytes(), "AES");
-            cipher.init(Cipher.ENCRYPT_MODE, aesKey);
-            byte[] utf8 = result.getBytes("UTF8");
-
-            // Encrypt
-            byte[] enc = cipher.doFinal(utf8);
+                // Encrypt
+                byte[] enc = cipher.doFinal(utf8);
 
 //		System.out.println("(encode)Dau ra message: " + Tags.CHAT_MSG_OPEN_TAG + result + Tags.CHAT_MSG_CLOSE_TAG);
-            return Tags.CHAT_MSG_OPEN_TAG + new sun.misc.BASE64Encoder().encode(enc) + Tags.CHAT_MSG_CLOSE_TAG;
+                return Tags.CHAT_MSG_OPEN_TAG + new sun.misc.BASE64Encoder().encode(enc) + Tags.CHAT_MSG_CLOSE_TAG;
+            } else {
+                return Tags.CHAT_MSG_OPEN_TAG + result + Tags.CHAT_MSG_CLOSE_TAG;
+            }
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
